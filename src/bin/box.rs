@@ -1,26 +1,32 @@
+#[derive(PartialEq)]
 enum List {
     Cons(i32, Box<List>),
     None,
 }
 
 impl List {
-    pub fn new() -> Self {
-        List::None
+    pub fn new(n: i32) -> Self {
+        List::Cons(n, Box::new(List::None))
     }
 
-    pub fn add(&mut self, num: i32) {
-        let mut r = self;
-        while !r.is_none() {
-            r = self;
+    pub fn add(&mut self, n: i32) {
+        if self.is_none() {
+            *self = List::new(n)
         }
-        r = List::Cons(num, Box::new(List::None));
     }
 
     pub fn is_none(&self) -> bool {
-        self == List::None
+        *self == List::None
     }
 }
 
 fn main() {
-    let mut list = List::new();
+    let mut list = List::None;
+    println!("list.is_none(): {}", list.is_none());
+
+    list.add(3);
+    println!("list.is_none(): {}", list.is_none());
+
+    list = List::new(7);
+    println!("list.is_none(): {}", list.is_none());
 }
